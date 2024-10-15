@@ -27,7 +27,7 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(tritontensorrtbackend LANGUAGES C CXX)
-
+set(CMAKE_CXX_STANDARD 17)
 #
 # Options
 #
@@ -78,17 +78,17 @@ FetchContent_MakeAvailable(repo-common repo-core repo-backend)
 #
 if(${TRITON_ENABLE_GPU})
   find_package(CUDAToolkit REQUIRED)
-  message(STATUS "Using CUDA ${CUDA_VERSION}")
+  message(STATUS "Using CUDA ${CUDAToolkit_VERSION}")
   if (WIN32)
     set(CUDA_NVCC_FLAGS -std=c++17)
   else ()
     set(CUDA_NVCC_FLAGS -std=c++11)
   endif ()
 
-  if(CUDA_VERSION VERSION_GREATER "10.1" OR CUDA_VERSION VERSION_EQUAL "10.1")
+  if(CUDAToolkit_VERSION VERSION_GREATER "10.1" OR CUDAToolkit_VERSION VERSION_EQUAL "10.1")
     add_definitions(-DTRITON_ENABLE_CUDA_GRAPH=1)
   else()
-    message(WARNING "CUDA ${CUDA_VERSION} does not support CUDA graphs.")
+    message(WARNING "CUDA ${CUDAToolkit_VERSION} does not support CUDA graphs.")
   endif()
 else()
   message( FATAL_ERROR "TensorRT backend requires TRITON_ENABLE_GPU=1, CMake will exit." )
@@ -192,8 +192,8 @@ FOREACH(p ${TRITON_TENSORRT_LIB_PATHS})
     set(TRITON_TENSORRT_LDFLAGS ${TRITON_TENSORRT_LDFLAGS} "-L${p}")
 ENDFOREACH(p)
 
-find_library(NVINFER_LIBRARY NAMES nvinfer)
-find_library(NVINFER_PLUGIN_LIBRARY NAMES nvinfer_plugin)
+find_library(NVINFER_LIBRARY NAMES nvinfer PATHS ${TRITON_TENSORRT_LIB_PATHS})
+find_library(NVINFER_PLUGIN_LIBRARY NAMES nvinfer_plugin PATHS ${TRITON_TENSORRT_LIB_PATHS})
 target_link_libraries(
   triton-tensorrt-backend
   PRIVATE
