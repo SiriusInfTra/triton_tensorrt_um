@@ -127,6 +127,8 @@ add_library(
   src/output_allocator.h
   src/io_binding_info.cc
   src/io_binding_info.h
+  src/um_allocator.cc
+  src/um_allocator.h
 )
 
 add_library(

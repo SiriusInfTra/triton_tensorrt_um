@@ -32,6 +32,7 @@
 #include <mutex>
 
 #include "triton/backend/backend_common.h"
+#include <um_allocator.h>
 
 namespace triton { namespace backend { namespace tensorrt {
 
@@ -52,6 +53,7 @@ LoadPlan(
            tensorrt_logger->LastErrorMsg())
               .c_str());
     }
+    runtime->get()->setGpuAllocator(new colsys::UMAllocator());
 
     if (ModelState::isVersionCompatible() &&
         !runtime->get()->getEngineHostCodeAllowed()) {
