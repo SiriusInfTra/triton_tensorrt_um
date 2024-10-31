@@ -30,6 +30,24 @@
 
 # TensorRT Backend
 
+**Build with COLSYS UM Allocator**
+
+Branch:
+r23.12-colsys
+
+Options: 
+```bash
+-DCMAKE_INSTALL_PREFIX:PATH=$COLSYS_HOME/triton/tensorrt_um/install
+-DTRITON_COMMON_REPO_TAG=r23.12
+-DTRITON_CORE_REPO_TAG=r23.12
+-DTRITON_BACKEND_REPO_TAG=r23.12
+-DTRITON_TENSORRT_LIB_PATHS=$TENSORT_RT_8616_HOME/lib
+-DTRITON_TENSORRT_INCLUDE_PATHS=$TENSORT_RT_8616_HOME/include
+```
+The following content is the original readme:
+
+
+
 The Triton backend for [TensorRT](https://github.com/NVIDIA/TensorRT).
 You can learn more about Triton backends in the [backend
 repo](https://github.com/triton-inference-server/backend). Ask
